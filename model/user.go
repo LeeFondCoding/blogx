@@ -1,6 +1,9 @@
 package model
 
-import "blogx/model/enum"
+import (
+	"blogx/model/enum"
+	"time"
+)
 
 type User struct {
 	Model
@@ -14,4 +17,15 @@ type User struct {
 	Email          string                  `gorm:"size:256" json:"email"` //第三方登录的唯一ID
 	OpenID         string                  `gorm:"size:64" json:"openID"`
 	Role           enum.Role               `json:"role"` // 角色 1 管理员  2 普通用户  3 访客
+}
+
+type UserConf struct {
+	UserID             uint       `gorm:"unique" json:"userID"`
+	User               User       `gorm:"foreignKey:UserID" json:"-"`
+	LikeTags           []string   `gorm:"type:longtext;serializer:json" json:"likeTags"`
+	UpdateUsernameDate *time.Time `json:"updateUsernameDate"` // 上次修改用户名的时间
+	OpenCollect        bool       `json:"openCollect"`        // 公开我的收藏
+	OpenFollow         bool       `json:"openFollow"`         // 公开我的关注
+	OpenFans           bool       `json:"openFans"`           // 公开我的粉丝
+	HomeStyleID        uint       `json:"homeStyleID"`        // 主页样式的id
 }
