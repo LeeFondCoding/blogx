@@ -18,4 +18,5 @@ func main() {
 	logrus.Warn("XXX")
 	logrus.Error("XXX")
 	logrus.Info("XXX")
+	core.InitDB()
 }

@@ -4,3 +4,17 @@ system:
 log: 
   app: blogx_server
   dir: log
+db:
+  user: lichun
+  password: 123456
+  host: 127.0.0.1
+  port: 3306
+  dbname: blogx
+  debug: false # 打印全部日志
+db1: # 可为空
+  user: lichun
+  password: 123456
+  host: 127.0.0.1
+  port: 3306
+  dbname: blogx
+  debug: false # 打印全部日志
