@@ -11,12 +11,12 @@ import (
 
 func main() {
 	flag.Parse()
-	global.Conf = core.InitConf();
+	global.Conf = core.InitConf()
 	core.InitLogrus()
 
 	logrus.Debug("XXX")
 	logrus.Warn("XXX")
 	logrus.Error("XXX")
 	logrus.Info("XXX")
-	core.InitDB()
+	global.DB = core.InitDB()
 }
