@@ -11,6 +11,7 @@ func FlagDB() {
 	err := global.DB.AutoMigrate(
 		&model.User{},
 		&model.UserConf{},
+		&model.Article{},
 	)
 	if err != nil {
 		logrus.Errorf("数据迁移失败 %s", err)
