@@ -1,34 +1,29 @@
 package core
 
 import (
+	"blogx/conf"
 	"blogx/flag"
-	
+
 	"fmt"
 	"os"
+
 	"gopkg.in/yaml.v2"
 )
 
 var configPath = "settings.yaml"
-type System struct {
-	Ip string `yaml:"IP"`
-	Port int `yaml:"Port"`
-}
 
-type Config struct {
-	System System `yaml:"system"`
-}
-
-func InitConf() {
+func InitConf() (c *conf.Config) {
 	data, err := os.ReadFile(configPath)
 	if err != nil {
 		panic(err)
 	}
 	//fmt.Println(string(data))
-	var config Config
-	err = yaml.Unmarshal(data, &config)
+	c = new(conf.Config)
+	err = yaml.Unmarshal(data, c)
 	if err != nil {
 		panic(fmt.Sprintf("yaml配置文件给是错误 %s", err))
 	}
 
-	fmt.Printf("成功读取配置文件: %s", flag.Option.File)
+	fmt.Printf("成功读取配置文件: %s\n", flag.Option.File)
+	return
 }
