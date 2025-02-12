@@ -4,6 +4,7 @@ import (
 	"blogx/core"
 	"blogx/flag"
 	"blogx/global"
+	"blogx/router"
 )
 
 func main() {
@@ -13,4 +14,6 @@ func main() {
 	global.DB = core.InitDB()
 
 	flag.Run()
+
+	router.Run()
 }
