@@ -12,6 +12,7 @@ func main() {
 	global.Conf = core.InitConf()
 	core.InitLogrus()
 	global.DB = core.InitDB()
+	core.InitIPDB()
 
 	flag.Run()
 
