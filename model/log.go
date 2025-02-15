@@ -17,4 +17,5 @@ type Log struct {
 	UserName    string            `gorm:"size:32" json:"userName"` // 登录的用户名
 	Pwd         string            `gorm:"size:32" json:"username"` // 登录日志的密码
 	LoginType   enum.LoginType    `json:"loginType"`               // 登录的类型
+	ServiceName string            `gorm:"size:32" json:"serviceName"`
 }

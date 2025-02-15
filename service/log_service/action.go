@@ -13,8 +13,8 @@ import (
 	"reflect"
 	"strings"
 
-	e "github.com/pkg/errors"
 	"github.com/gin-gonic/gin"
+	e "github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -31,7 +31,7 @@ type ActionLog struct {
 	showResponseHeader bool
 	itemList           []string
 	responseHeader     http.Header
-	isMiddleware bool
+	isMiddleware       bool
 }
 
 func (ac *ActionLog) ShowRequest() {
@@ -118,6 +118,33 @@ func (ac *ActionLog) SetResponse(data []byte) {
 
 func (ac *ActionLog) SetResponseHeader(header http.Header) {
 	ac.responseHeader = header
+}
+
+func (ac *ActionLog) MiddlewareSave() {
+	_saveLog, _ := ac.c.Get("saveLog")
+	saveLog, _ := _saveLog.(bool)
+	if !saveLog {
+		return
+	}
+
+	if ac.log == nil {
+		// 创建
+		ac.isMiddleware = true
+		ac.Save()
+		return
+	}
+	// 在视图里面save过，属于更新
+	// 响应头
+	if ac.showResponseHeader {
+		byteData, _ := json.Marshal(ac.responseHeader)
+		ac.itemList = append(ac.itemList, fmt.Sprintf("<div class=\"log_response_header\"><pre class=\"log_json_body\">%s</pre></div>", string(byteData)))
+	}
+
+	// 设置响应
+	if ac.showResponse {
+		ac.itemList = append(ac.itemList, fmt.Sprintf("<div class=\"log_response\"><pre class=\"log_json_body\">%s</pre></div>", string(ac.responseBody)))
+	}
+	ac.Save()
 }
 
 func (ac *ActionLog) Save() {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func main()  {
+func main2()  {
 	core.InitIPDB()
 	fmt.Println(core.GetIpAddr("175.0.201.207"))
 	fmt.Println(core.GetIpAddr("27.189.17.220"))
