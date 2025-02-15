@@ -8,7 +8,11 @@ import (
 )
 
 func Run() {
+	gin.SetMode(global.Conf.System.GinMode)
 	r := gin.Default()
+
+	r.Static("/upload", "upload")
+
 	nr := r.Group("api")
 	SiteRouter(nr)
 
