@@ -1,10 +1,7 @@
 package site
 
 import (
-	"blogx/model/enum"
-	"blogx/service/log_service"
-	"fmt"
-	"time"
+	"blogx/common/res"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,36 +9,21 @@ import (
 type SiteApi struct{}
 
 func (SiteApi) SiteInfoView(c *gin.Context) {
-	fmt.Println("1")
-	log_service.NewLoginSuccess(c, enum.UserPwdLoginType)
-	log_service.NewLoginFail(c, enum.UserPwdLoginType, "用户不存在", "lichun", "1234")
-	c.JSON(200, gin.H{"code": 0, "msg": "站点信息"})
+	res.OkWithData("xx", c)
 }
 
 type SiteUpdateRequest struct {
 	Name string `json:"name" binding:"required"`
+	Age  int    `json:"age" binding:"required" label:"年龄"`
 }
 
 func (SiteApi) SiteUpdateView(c *gin.Context) {
-	log := log_service.GetLog(c)
 
-	log.ShowRequest()
-	log.ShowRequestHeader()
-	log.ShowResponseHeader()
-	log.ShowResponse()
-	log.SetTitle("更新站点")
-	log.SetItemInfo("请求时间", time.Now())
-	log.SetImage("/xxx/xxx")
-	log.SetLink("yaml学习地址", "https://www.fengfengzhidao.com")
-	c.Header("xxx", "xxee")
 	var cr SiteUpdateRequest
 	err := c.ShouldBindJSON(&cr)
 	if err != nil {
-		log.SetError("参数绑定失败", err)
+		res.FailWithError(err, c)
+		return
 	}
-	log.SetItemInfo("结构体", cr)
-	log.SetItemInfo("切片", []string{"a", "b"})
-	log.SetItemInfo("字符串", "你好")
-	log.SetItemInfo("数字", 123)
-	c.JSON(200, gin.H{"code": 0, "msg": "站点信息"})
+	res.OkWithMsg("更新成功", c)
 }
