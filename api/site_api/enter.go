@@ -1,4 +1,4 @@
-package site
+package site_api
 
 import (
 	"blogx/common/res"

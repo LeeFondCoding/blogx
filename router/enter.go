@@ -15,6 +15,7 @@ func Run() {
 
 	nr := r.Group("api")
 	SiteRouter(nr)
+	LogRouter(nr)
 
 	nr.Use(middleware.Log)
 
