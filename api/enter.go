@@ -3,7 +3,7 @@ package api
 import "blogx/api/site"
 
 type Api struct {
-	Site site.Site
+	Site site.SiteApi
 }
 
 var App = Api{}
