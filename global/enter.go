@@ -7,8 +7,10 @@ import (
 	"gorm.io/gorm"
 )
 
+const Version = "1.0.0"
+
 var (
-	Conf *conf.Config
-	DB   *gorm.DB
+	Conf  *conf.Config
+	DB    *gorm.DB
 	Redis *redis.Client
 )

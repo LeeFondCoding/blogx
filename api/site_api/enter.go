@@ -23,6 +23,7 @@ func (SiteApi) SiteInfoView(c *gin.Context) {
 	}
 
 	if cr.Name == "site" {
+		global.Conf.Site.About.Version = global.Version
 		res.OkWithData(global.Conf.Site, c)
 		return
 	}
