@@ -27,7 +27,7 @@ func GetToken(myClaim MyClaim) (string, error) {
 	claim :=	Claim{
 		MyClaim: myClaim,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Duration(global.Conf.Jwt.Expire) * time.Second).Unix(), // 过期时间
+			ExpiresAt: time.Now().Add(time.Duration(global.Conf.Jwt.Expire) * time.Hour).Unix(), // 过期时间
 			Issuer:    global.Conf.Jwt.Issuer,                                                     // 签发人
 		},
 	}
