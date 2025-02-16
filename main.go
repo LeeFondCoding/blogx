@@ -13,6 +13,7 @@ func main() {
 	core.InitLogrus()
 	global.DB = core.InitDB()
 	core.InitIPDB()
+	global.Redis = core.InitRedis()
 
 	flag.Run()
 
