@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"blogx/global"
+	"blogx/model/enum"
 	"errors"
 	"strings"
 	"time"
@@ -14,7 +15,7 @@ import (
 type MyClaim struct {
 	UserID   uint   `json:"userID"`
 	Username string `json:"username"`
-	Role     int8   `json:"role"`
+	Role     enum.Role   `json:"role"`
 }
 
 // 传入jwt的字段

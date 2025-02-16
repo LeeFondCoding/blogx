@@ -3,7 +3,6 @@ package res
 
 import (
 	"blogx/util/validate"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -73,6 +72,6 @@ func FailWithCode(code Code, c *gin.Context) {
 
 func FailWithError(err error, c *gin.Context) {
 	data, msg := validate.ValidateError(err)
-	fmt.Println(msg)
+	//fmt.Println(msg)
 	FailWithData(data, msg, c)
 }

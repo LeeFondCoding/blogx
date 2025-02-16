@@ -1,5 +1,6 @@
 package enum
 
+// 哪种方式登录的
 type LoginType int8
 
 const (

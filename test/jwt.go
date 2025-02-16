@@ -17,6 +17,4 @@ func main() {
 		Role:   1,
 	})
 	fmt.Println(token, err)
-	cls, err := jwt.ParseToken("xx")
-	fmt.Println(cls, err)
 }

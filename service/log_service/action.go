@@ -1,3 +1,4 @@
+// service/log_service/action_log.go
 package log_service
 
 import (
@@ -5,17 +6,17 @@ import (
 	"blogx/global"
 	"blogx/model"
 	"blogx/model/enum"
+	"blogx/util/jwt"
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	e "github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 	"io"
 	"net/http"
 	"reflect"
 	"strings"
-
-	"github.com/gin-gonic/gin"
-	e "github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 )
 
 type ActionLog struct {
@@ -106,7 +107,7 @@ func (ac *ActionLog) SetError(label string, err error) {
 func (ac *ActionLog) SetRequest(c *gin.Context) {
 	byteData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		logrus.Errorf("%s", err.Error())
+		logrus.Errorf(err.Error())
 	}
 	c.Request.Body = io.NopCloser(bytes.NewReader(byteData))
 	ac.requestBody = byteData
@@ -119,7 +120,6 @@ func (ac *ActionLog) SetResponse(data []byte) {
 func (ac *ActionLog) SetResponseHeader(header http.Header) {
 	ac.responseHeader = header
 }
-
 func (ac *ActionLog) MiddlewareSave() {
 	_saveLog, _ := ac.c.Get("saveLog")
 	saveLog, _ := _saveLog.(bool)
@@ -146,15 +146,20 @@ func (ac *ActionLog) MiddlewareSave() {
 	}
 	ac.Save()
 }
-
-func (ac *ActionLog) Save() {
+func (ac *ActionLog) Save() (id uint) {
+	// 方案1：save只能在日志的响应中间件里面调用
+	// 方案2：在视图里面调Save，需要返回日志的id
 
 	if ac.log != nil {
+		newContent := strings.Join(ac.itemList, "\n")
+		content := ac.log.Content + "\n" + newContent
+
 		// 之前已经save过了，那就是更新
 		global.DB.Model(ac.log).Updates(map[string]any{
-			"title": "更新",
+			"content": content,
 		})
-		return
+		ac.itemList = []string{}
+		return ac.log.ID
 	}
 
 	var newItemList []string
@@ -177,20 +182,26 @@ func (ac *ActionLog) Save() {
 	// 中间的一些content
 	newItemList = append(newItemList, ac.itemList...)
 
-	// 响应头
-	if ac.showResponseHeader {
-		byteData, _ := json.Marshal(ac.responseHeader)
-		newItemList = append(newItemList, fmt.Sprintf("<div class=\"log_response_header\"><pre class=\"log_json_body\">%s</pre></div>", string(byteData)))
-	}
+	if ac.isMiddleware {
+		// 响应头
+		if ac.showResponseHeader {
+			byteData, _ := json.Marshal(ac.responseHeader)
+			newItemList = append(newItemList, fmt.Sprintf("<div class=\"log_response_header\"><pre class=\"log_json_body\">%s</pre></div>", string(byteData)))
+		}
 
-	// 设置响应
-	if ac.showResponse {
-		newItemList = append(newItemList, fmt.Sprintf("<div class=\"log_response\"><pre class=\"log_json_body\">%s</pre></div>", string(ac.responseBody)))
+		// 设置响应
+		if ac.showResponse {
+			newItemList = append(newItemList, fmt.Sprintf("<div class=\"log_response\"><pre class=\"log_json_body\">%s</pre></div>", string(ac.responseBody)))
+		}
 	}
 
 	ip := ac.c.ClientIP()
 	addr := core.GetIpAddr(ip)
-	userID := uint(1)
+	claims, err := jwt.ParseTokenByGin(ac.c)
+	userID := uint(0)
+	if err == nil && claims != nil {
+		userID = claims.UserID
+	}
 
 	log := model.Log{
 		LogType: enum.ActionLogType,
@@ -202,12 +213,14 @@ func (ac *ActionLog) Save() {
 		Addr:    addr,
 	}
 
-	err := global.DB.Create(&log).Error
+	err = global.DB.Create(&log).Error
 	if err != nil {
 		logrus.Errorf("日志创建失败 %s", err)
 		return
 	}
 	ac.log = &log
+	ac.itemList = []string{}
+	return log.ID
 }
 
 func NewActionLogByGin(c *gin.Context) *ActionLog {
@@ -225,6 +238,6 @@ func GetLog(c *gin.Context) *ActionLog {
 	if !ok {
 		return NewActionLogByGin(c)
 	}
-	c.Set("savelog", true)
+	c.Set("saveLog", true)
 	return log
 }
