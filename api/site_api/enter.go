@@ -37,16 +37,21 @@ func (SiteApi) SiteInfoView(c *gin.Context) {
 	var data any
 	switch cr.Name {
 	case "email":
-		data = global.Conf.Email
+		rep := global.Conf.Email
+		rep.AuthCode = "******"
+		data = rep
 	case "qq":
-		data = global.Conf.QQ
+		rep := global.Conf.QQ
+		rep.AppKey = "******"
+		data = rep
 	case "qiNiu":
-		data = global.Conf.QiNiu
+		rep := global.Conf.QiNiu
+		rep.SecretKey = "******"
+		data = rep
 	case "ai":
-		data = global.Conf.Ai
-	default:
-		res.FailWithMsg("不存在的配置", c)
-		return
+		rep := global.Conf.Ai
+		rep.SecretKey = "******"
+		data = rep
 	}
 	res.OkWithData(data, c)
 }
@@ -57,7 +62,6 @@ type SiteUpdateRequest struct {
 }
 
 func (SiteApi) SiteUpdateView(c *gin.Context) {
-
 	var cr SiteUpdateRequest
 	err := c.ShouldBindJSON(&cr)
 	if err != nil {
