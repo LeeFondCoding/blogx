@@ -1,3 +1,4 @@
+// utils/validate/enter.go
 package validate
 
 import (
@@ -6,14 +7,13 @@ import (
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
- 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
+	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 	"reflect"
 	"strings"
 )
 
 var trans ut.Translator
 
-// TODO
 func init() {
 	// 创建翻译器
 	uni := ut.New(zh.New())
@@ -38,6 +38,9 @@ func init() {
 			label = field.Name
 		}
 		name := field.Tag.Get("json")
+		if name == "" {
+			name = field.Tag.Get("form")
+		}
 		return fmt.Sprintf("%s---%s", name, label)
 	})
 }
@@ -57,7 +60,6 @@ func ValidateErr(err error) string {
 func ValidateError(err error) (data map[string]any, msg string) {
 	errs, ok := err.(validator.ValidationErrors)
 	if !ok {
-		fmt.Println("断言错误")
 		msg = err.Error()
 		return
 	}
