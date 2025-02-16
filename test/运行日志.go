@@ -8,7 +8,7 @@ import (
 	"blogx/service/log_service"
 )
 
-func main() {
+func main3() {
 	flag.Parse()
 	global.Conf = core.InitConf()
 	core.InitLogrus()

@@ -6,6 +6,10 @@ system:
 log: 
   app: blogx_server
   dir: log
+jwt: 
+  expire: 3
+  secret: xxx
+  issuer: lichun
 db:
   user: lichun
   password: 123456
