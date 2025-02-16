@@ -61,6 +61,10 @@ type SiteUpdateRequest struct {
 	Age  int    `json:"age" binding:"required" label:"年龄"`
 }
 
+func (SiteApi) SiteInfoQQView(c *gin.Context) {
+	res.OkWithData(global.Conf.QQ.Url(), c)
+}
+
 func (SiteApi) SiteUpdateView(c *gin.Context) {
 	var cr SiteUpdateRequest
 	err := c.ShouldBindJSON(&cr)
