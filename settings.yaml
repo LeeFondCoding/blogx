@@ -6,14 +6,6 @@ system:
 log: 
   app: blogx_server
   dir: log
-jwt: 
-  expire: 3
-  secret: xxx
-  issuer: lichun
-redis:
-  addr: 127.0.0.1:6379
-  passwd: 
-  db: 1
 ai: 
   enable: false
   secretKey: jgojgoajgopgjopgjpaog
@@ -33,3 +25,66 @@ db1: # 可为空
   port: 3306
   dbname: blogx
   debug: false # 打印全部日志
+jwt:
+  expire: 3
+  secret: xxx
+  issuer: fengfeng
+redis:
+  addr: 127.0.0.1:6379
+  password: "1234"
+  db: 2
+site:
+  siteInfo:
+    title: 枫枫知道十代博客
+    logo: ""
+    beian: ""
+    mode: 1
+  project:
+    title: ""
+    icon: ""
+    webPath: ""
+  seo:
+    keywords: ""
+    description: ""
+  about:
+    siteDate: ""
+    qq: ""
+    wechat: ""
+    gitee: ""
+    bilibili: ""
+    github: ""
+  login:
+    qqLogin: false
+    usernamePwdLogin: false
+    emailLogin: false
+    captcha: false
+  indexRight:
+    list: []
+  article:
+    noExamine: true
+email:
+  domain: ""
+  port: 0
+  sendEmail: ""
+  authCode: ""
+  sendNickname: ""
+  ssl: false
+  tls: false
+qq:
+  appID: "747573454"
+  appKey: ""
+  redirect: http://xxxxx
+qiNiu:
+  enable: false
+  accessKey: ""
+  secretKey: ""
+  bucket: ""
+  uri: ""
+  region: ""
+  prefix: ""
+  size: 0
+ai:
+  enable: false
+  secretKey: njdfnhj6344t45347gsdhgsdh
+  nickname: 小枫
+  avatar: /xxx/xxx
