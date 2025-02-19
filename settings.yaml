@@ -33,6 +33,15 @@ redis:
   addr: 127.0.0.1:6379
   password: "1234"
   db: 2
+upload: 
+  size: 3
+  whiteList:
+    - jpg
+    - jpeg
+    - png
+    - webp
+    - gif
+  uploadDir: images001
 site:
   siteInfo:
     title: 枫枫知道十代博客

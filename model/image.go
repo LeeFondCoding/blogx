@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type Image struct {
 	Model
 	FileName string `gorm:"size:64" json:"filename"`
@@ -9,5 +11,5 @@ type Image struct {
 }
 
 func (i Image) WebPath() string {
-	return "/"
+	return fmt.Sprintf("/%s", i.Path)
 }
