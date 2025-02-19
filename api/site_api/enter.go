@@ -175,9 +175,9 @@ func UpdateSite(site conf.Site) error {
 		doc.Find("title").SetText(site.Project.Title)
 	}
 	if site.Project.Icon != "" {
-		if doc.Is("link[ref='icon']") {
-			// 有就修改
-			doc.Find("link[ref='icon']").SetAttr("href", site.Project.Icon)
+		selection := doc.Find("link[rel=\"icon\"]")
+		if selection.Length() > 0 {
+			selection.SetAttr("href", site.Project.Icon)
 		} else {
 			// 没有就创建
 			doc.Find("head").AppendHtml(fmt.Sprintf("<link rel=\"icon\" href=\"%s\">", site.Project.Icon))
@@ -191,8 +191,9 @@ func UpdateSite(site conf.Site) error {
 		}
 	}
 	if site.Seo.Description != "" {
-		if doc.Is("meta[name='description']") {
-			doc.Find("meta[name='description']").SetAttr("content", site.Seo.Description)
+		selection := doc.Find("meta[name=\"description\"]")
+		if selection.Length() > 0 {
+			selection.SetAttr("content", site.Seo.Description)
 		} else {
 			doc.Find("head").AppendHtml(fmt.Sprintf("<meta name=\"description\" content=\"%s\">", site.Seo.Description))
 		}
