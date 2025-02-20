@@ -17,6 +17,7 @@ func Run() {
 	SiteRouter(nr)
 	LogRouter(nr)
 	ImageRouter(nr)
+	BannerRouter(nr)
 
 	nr.Use(middleware.Log)
 
