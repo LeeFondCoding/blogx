@@ -18,6 +18,7 @@ func Run() {
 	LogRouter(nr)
 	ImageRouter(nr)
 	BannerRouter(nr)
+	UserRouter(nr)
 
 	nr.Use(middleware.Log)
 

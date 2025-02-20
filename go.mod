@@ -44,6 +44,7 @@ require (
 
 require (
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/lionsoul2014/ip2region/binding/golang v0.0.0-20241220152942-06eb5c6e8230
 	github.com/mojocn/base64Captcha v1.3.8
 	github.com/pkg/errors v0.9.1
